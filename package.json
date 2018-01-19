@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "testapp",
   "main": "app.jsx",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -26,8 +23,37 @@
     "gulp-open": "^2.1.0",
     "gulp-order": "^1.1.1",
     "gulp-sync": "^0.1.4",
+    "jest": "^22.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.2.0",
     "vinyl-source-stream": "^2.0.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "rootDir": ".",
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "cacheDirectory": "<rootDir>/.jest/",
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\](?!vendavo-*).+\\.(js|jsx)$"
+    ],
+    "timers": "fake",
+    "testURL": "http://localhost/#",
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    }
   }
 }

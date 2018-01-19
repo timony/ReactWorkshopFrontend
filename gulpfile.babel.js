@@ -6,6 +6,7 @@ import del from 'del';
 import eslint from 'gulp-eslint';
 import eslintFormatter from 'eslint-friendly-formatter';
 import inject from 'gulp-inject';
+import jest from 'jest';
 import gulp from 'gulp';
 import open from 'gulp-open';
 import order from 'gulp-order';
@@ -25,7 +26,22 @@ gulp.task('lint', () => {
       'src/**/*.jsx'
     ])
     .pipe(eslint())
-    .pipe(eslint.format(eslintFormatter));
+    .pipe(eslint.format());
+});
+
+gulp.task('test', done => {
+  jest.runCLI(
+    {coverage: true},
+    [ __dirname ]
+  )
+    .then(({ results }) => {
+      if (results.success) {
+        done();
+      } else {
+        throw new Error('Tests failed!');
+      }
+    })
+    .catch(done);
 });
 
 gulp.task('js', () => {
