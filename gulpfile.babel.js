@@ -3,6 +3,8 @@ import browserify from 'browserify';
 import config from './build.config';
 import connect from 'gulp-connect';
 import del from 'del';
+import eslint from 'gulp-eslint';
+import eslintFormatter from 'eslint-friendly-formatter';
 import inject from 'gulp-inject';
 import gulp from 'gulp';
 import open from 'gulp-open';
@@ -13,6 +15,17 @@ const gulpsync = require('gulp-sync')(gulp);
 
 gulp.task('clean', () => {
   return del(['dist']);
+});
+
+gulp.task('lint', () => {
+  return gulp
+    .src([
+      'gulpfile.babel.js',
+      'src/**/*.js',
+      'src/**/*.jsx'
+    ])
+    .pipe(eslint())
+    .pipe(eslint.format(eslintFormatter));
 });
 
 gulp.task('js', () => {
@@ -52,7 +65,7 @@ gulp.task('html', () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('transpile', gulpsync.sync(['clean', 'js', 'html']));
+gulp.task('transpile', gulpsync.sync(['clean', ['lint', 'js'], 'html']));
 
 gulp.task('start-server', ['transpile'], () => {
   const connectOptions = {
