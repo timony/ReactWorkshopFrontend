@@ -1,27 +1,39 @@
-import babel from 'gulp-babel';
+import babelify from 'babelify';
+import browserify from 'browserify';
 import connect from 'gulp-connect';
 import del from 'del';
 import gulp from 'gulp';
 import open from 'gulp-open';
+import source from 'vinyl-source-stream';
 
 gulp.task('clean', () => {
   return del(['dist']);
 });
 
-gulp.task('js', ['clean'], () => {
-  return gulp
-    .src('src/**/*.js*')
-    .pipe(babel())
-    .pipe(gulp.dest('dist/js'));
+gulp.task('js', () => {
+  const options = {
+    entries: './src/App.jsx',   // Entry point
+    extensions: ['.js', '.jsx'],            // consider files with these extensions as modules
+    debug: true,  // add resource map at the end of the file or not
+    paths: ['./src/']           // This allows relative imports in require, with './scripts/' as root
+  };
+
+  return browserify(options)
+    .transform(babelify)
+    .bundle()
+    .pipe(source('app.js'))
+    .pipe(gulp.dest('./dist/js'));
 });
 
-gulp.task('html', function () {
+gulp.task('html', () => {
   gulp
     .src('src/index.html')
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('start-server', ['clean', 'js', 'html'], () => {
+gulp.task('transpile', ['clean', 'js', 'html']);
+
+gulp.task('start-server', ['transpile'], () => {
   const connectOptions = {
     port: 9000,
     root: './dist'
