@@ -6,6 +6,8 @@ import gulp from 'gulp';
 import open from 'gulp-open';
 import source from 'vinyl-source-stream';
 
+const gulpsync = require('gulp-sync')(gulp);
+
 gulp.task('clean', () => {
   return del(['dist']);
 });
@@ -31,7 +33,7 @@ gulp.task('html', () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('transpile', ['clean', 'js', 'html']);
+gulp.task('transpile', gulpsync.sync(['clean', ['js', 'html']]));
 
 gulp.task('start-server', ['transpile'], () => {
   const connectOptions = {
