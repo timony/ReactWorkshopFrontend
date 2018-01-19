@@ -1,6 +1,6 @@
-var connect = require('gulp-connect');
-var gulp = require('gulp');
-var open = require('gulp-open');
+import connect from 'gulp-connect';
+import gulp from 'gulp';
+import open from 'gulp-open';
 
 gulp.task('start-server', () => {
   const connectOptions = {
