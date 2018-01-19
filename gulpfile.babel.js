@@ -12,7 +12,7 @@ import open from 'gulp-open';
 import order from 'gulp-order';
 import source from 'vinyl-source-stream';
 
-const gulpsync = require('gulp-sync')(gulp);
+const gulpSync = require('gulp-sync')(gulp);
 
 gulp.task('clean', () => {
   return del(['dist']);
@@ -81,7 +81,7 @@ gulp.task('html', () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('transpile', gulpsync.sync(['clean', ['lint', 'js'], 'html']));
+gulp.task('transpile', gulpSync.sync(['clean', ['lint', 'js'], 'html']));
 
 gulp.task('start-server', ['transpile'], () => {
   const connectOptions = {
@@ -102,4 +102,19 @@ gulp.task('start-server', ['transpile'], () => {
     .pipe(open(openOptions));
 });
 
-gulp.task('default', ['start-server']);
+gulp.task('js:watch', gulpSync.sync(['js']), () => {
+  gulp.src('./dist')
+    .pipe(connect.reload());
+});
+gulp.task('html:watch', gulpSync.sync(['html']), () => {
+  gulp.src('./dist')
+    .pipe(connect.reload());
+});
+
+gulp.task('serve', ['start-server'], () => {
+  gulp.watch('./src/**/*.js', ['js:watch']);
+  gulp.watch('./src/**/*.jsx', ['js:watch']);
+  gulp.watch('./src/index.html', ['html:watch']);
+});
+
+gulp.task('default', ['serve']);
