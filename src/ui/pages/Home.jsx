@@ -1,9 +1,10 @@
 import React from 'react';
+import {homeLabel} from '../../services/functions';
 
 export class Home extends React.Component {
   render() {
     const element = (
-      <div>Home page</div>
+      <div>{homeLabel()}</div>
     );
 
     return (
