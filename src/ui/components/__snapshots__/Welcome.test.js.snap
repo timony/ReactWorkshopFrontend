@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home dump component should render with defaults 1`] = `
+<h2>
+  It is 
+  12:41:11
+</h2>
+`;

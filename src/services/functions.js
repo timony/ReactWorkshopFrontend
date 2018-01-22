@@ -6,4 +6,8 @@ function homeLabel() {
   return 'Home page from function';
 }
 
-module.exports = {sum, homeLabel};
+function getUserName() {
+  return 'Timony';
+}
+
+module.exports = {sum, homeLabel, getUserName};
